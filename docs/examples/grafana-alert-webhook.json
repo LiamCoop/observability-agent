@@ -1,0 +1,48 @@
+{
+  "receiver": "observability-agent-dev",
+  "status": "firing",
+  "orgId": 1,
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighErrorRate",
+        "service": "checkout-api",
+        "severity": "page"
+      },
+      "annotations": {
+        "summary": "checkout-api is returning elevated 5xx responses",
+        "description": "5xx rate is above threshold for 10 minutes"
+      },
+      "startsAt": "2026-06-20T12:00:00Z",
+      "endsAt": "2026-06-20T12:30:00Z",
+      "generatorURL": "https://grafana.example.com/alerting/grafana/rule/view/high-error-rate",
+      "fingerprint": "example-high-error-rate-checkout-api",
+      "silenceURL": "https://grafana.example.com/alerting/silence/new",
+      "dashboardURL": "",
+      "panelURL": "",
+      "values": {
+        "A": 0.12
+      }
+    }
+  ],
+  "groupLabels": {
+    "alertname": "HighErrorRate",
+    "service": "checkout-api"
+  },
+  "commonLabels": {
+    "alertname": "HighErrorRate",
+    "service": "checkout-api",
+    "severity": "page"
+  },
+  "commonAnnotations": {
+    "summary": "checkout-api is returning elevated 5xx responses"
+  },
+  "externalURL": "https://grafana.example.com/",
+  "version": "1",
+  "groupKey": "{}:{alertname=\"HighErrorRate\", service=\"checkout-api\"}",
+  "truncatedAlerts": 0,
+  "title": "[FIRING:1] HighErrorRate checkout-api",
+  "state": "alerting",
+  "message": "checkout-api is returning elevated 5xx responses"
+}

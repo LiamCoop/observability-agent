@@ -18,3 +18,13 @@ export const listDatasourcesTool = tool(
     }),
   }
 );
+
+export const getDatasourceTool = tool(
+  async ({ datasourceUid }) => runGcx(["datasources", "get", datasourceUid, "-o", "json"]),
+  {
+    name: "gcx_get_datasource",
+    description:
+      "Get full details for a Grafana datasource by UID through gcx. Use when recovering from datasource-not-found errors or verifying datasource type/details.",
+    schema: z.object({ datasourceUid: z.string().describe("Datasource UID to inspect.") }),
+  }
+);

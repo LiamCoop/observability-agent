@@ -1,9 +1,10 @@
+import "dotenv/config";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 
-export type GcxOutputFormat = "json" | "graph" | "text";
+export type GcxOutputFormat = "json" | "graph" | "wide" | "text";
 
 export interface GcxResult<T = unknown> {
   command: "gcx";
@@ -17,6 +18,7 @@ export async function runGcx<T = unknown>(args: string[], parseJson = true): Pro
   try {
     const { stdout, stderr } = await execFileAsync("gcx", args, {
       maxBuffer: 10 * 1024 * 1024,
+      env: getGcxEnv(),
     });
 
     return {
@@ -41,6 +43,13 @@ export async function runGcx<T = unknown>(args: string[], parseJson = true): Pro
   }
 }
 
+function getGcxEnv(): NodeJS.ProcessEnv {
+  return {
+    ...process.env,
+    GRAFANA_TOKEN: process.env.GRAFANA_TOKEN ?? process.env.SERVICE_TOKEN,
+  };
+}
+
 function parseGcxJson<T>(stdout: string): T {
   try {
     return JSON.parse(stdout) as T;
@@ -62,11 +71,12 @@ export function withOutput(args: string[], output: GcxOutputFormat = "json"): { 
 
 export function appendTimeRange(
   args: string[],
-  options: { from?: string; to?: string; step?: string }
+  options: { from?: string; to?: string; step?: string; time?: string }
 ): string[] {
   const next = [...args];
   if (options.from) next.push("--from", options.from);
   if (options.to) next.push("--to", options.to);
   if (options.step) next.push("--step", options.step);
+  if (options.time) next.push("--time", options.time);
   return next;
 }

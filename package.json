@@ -18,16 +18,24 @@
     "doc": "docs"
   },
   "scripts": {
+    "dev:api": "PORT=8081 tsx src/api/api.ts",
+    "dev:worker": "tsx src/workers/alertInvestigationWorker.ts",
+    "setup:gcx": "tsx src/gcx/configure.ts",
     "test": "test"
   },
   "dependencies": {
     "@langchain/core": "^1.2.0",
+    "@langchain/langgraph": "^1.0.0",
+    "@langchain/openai": "^1.5.1",
+    "bullmq": "^5.79.0",
+    "dotenv": "^17.4.2",
     "fastify": "^5.8.5",
     "tsc": "^2.0.4",
     "typescript": "^6.0.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^26.0.0"
+    "@types/node": "^26.0.0",
+    "tsx": "^4.22.4"
   }
 }

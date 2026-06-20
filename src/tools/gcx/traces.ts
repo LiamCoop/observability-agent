@@ -35,12 +35,19 @@ export const getTraceTool = tool(
 );
 
 export const listTraceLabelsTool = tool(
-  async ({ datasourceUid }) => runGcx(["traces", "labels", "-d", datasourceUid], false),
+  async ({ datasourceUid, scope }) => {
+    const args = ["traces", "labels", "-d", datasourceUid];
+    if (scope) args.push("--scope", scope);
+    return runGcx(args, false);
+  },
   {
     name: "gcx_list_trace_labels",
     description:
-      "List available Tempo TraceQL labels through gcx. Use to discover valid scoped trace attributes before querying.",
-    schema: z.object({ datasourceUid: z.string().describe("Tempo datasource UID.") }),
+      "List available Tempo TraceQL labels through gcx. Use to discover valid scoped trace attributes before querying. Optionally filter by scope such as resource or span.",
+    schema: z.object({
+      datasourceUid: z.string().describe("Tempo datasource UID."),
+      scope: z.enum(["resource", "span"]).optional().describe("Optional TraceQL attribute scope filter."),
+    }),
   }
 );
 
