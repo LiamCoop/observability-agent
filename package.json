@@ -1,0 +1,33 @@
+{
+  "name": "observability-agent",
+  "version": "1.0.0",
+  "description": "a langchain observability agent leveraging gcx CLI",
+  "homepage": "https://github.com/LiamCoop/observability-agent#readme",
+  "bugs": {
+    "url": "https://github.com/LiamCoop/observability-agent/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiamCoop/observability-agent.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.2.0",
+    "fastify": "^5.8.5",
+    "tsc": "^2.0.4",
+    "typescript": "^6.0.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0"
+  }
+}
