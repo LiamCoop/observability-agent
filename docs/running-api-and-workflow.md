@@ -2,7 +2,7 @@
 
 This project is a TypeScript Fastify API plus a LangGraph workflow that investigates Grafana alerts using the `gcx` CLI.
 
-> Current repo note: the API validates Grafana alert webhooks, enqueues a BullMQ job in Redis, and returns `202`. A separate worker process consumes those jobs and invokes the LangGraph workflow. The `Dockerfile` is still a Python placeholder and should not be treated as the canonical way to run this TypeScript app yet.
+> Current repo note: the API validates Grafana alert webhooks, enqueues a BullMQ job in Redis, and returns `202`. A separate worker process consumes those jobs and invokes the LangGraph workflow. The `Dockerfile` builds a Node image with `gcx` installed; `docker compose up --build` (needs a `.env`) runs Redis, the API, and the worker.
 
 ## Prerequisites
 

@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: redis:7-alpine
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      REDIS_HOST: redis
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    env_file: .env
+    environment:
+      REDIS_HOST: redis
+    # Configure the gcx context from env, then start consuming jobs.
+    command: sh -c "npm run setup:gcx && npx tsx src/workers/alertInvestigationWorker.ts"
+    depends_on:
+      - redis

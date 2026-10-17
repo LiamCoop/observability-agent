@@ -1,19 +1,25 @@
-FROM python:3.12-slim
+FROM node:22-slim
 
 WORKDIR /app
 
-# Install system deps if gcx needs them
-RUN apt-get update && apt-get install -y curl ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-# Install gcx CLI
-# COPY gcx /usr/local/bin/gcx
-# or curl/download it from your internal artifact registry
-RUN chmod +x /usr/local/bin/gcx
+# Install gcx CLI (https://grafana.com/docs/grafana-cloud/as-code/observability-as-code/grafana-cli/gcx/installation/)
+# Empty GCX_VERSION installs the latest release; pin it for reproducible builds.
+ARG GCX_VERSION=
+RUN curl -fsSL https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.sh \
+  | GCX_VERSION="${GCX_VERSION}" GCX_INSTALL_DIR=/usr/local/bin sh \
+  && gcx --version
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# tsx (devDependency) runs the TypeScript sources directly, so keep dev deps.
+COPY package.json package-lock.json ./
+RUN npm ci
 
-COPY . .
+COPY src ./src
 
-CMD ["uvicorn", "agent_api:app", "--host", "0.0.0.0", "--port", "8080"]
+ENV PORT=8080
+EXPOSE 8080
+
+# API by default; the worker overrides the command (see docker-compose.yml).
+CMD ["npx", "tsx", "src/api/api.ts"]
